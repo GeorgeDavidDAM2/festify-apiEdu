@@ -1,0 +1,1 @@
+ArtistEntity mappea los datos de la base de datos para convertirlos en un objeto y usarlos
