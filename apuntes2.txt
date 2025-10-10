@@ -1,0 +1,195 @@
+# FESTIFY API EDU - Explicación por Carpetas y Archivos
+
+## 📁 RAÍZ DEL PROYECTO
+
+### 📄 pom.xml
+**¿Qué hace?** Es el archivo de configuración de Maven que gestiona las dependencias y el ciclo de vida del proyecto.
+- Define información del proyecto (nombre, versión, descripción)
+- Lista todas las librerías que necesita el proyecto (Spring Boot, PostgreSQL, etc.)
+- Configura plugins para compilar, ejecutar tests y crear JARs
+- **Ejemplo:** Incluye spring-boot-starter-web para crear la API REST
+
+### 📄 docker-compose.yml
+**¿Qué hace?** Define los servicios de Docker que necesita la aplicación.
+- Configura una base de datos PostgreSQL en un contenedor
+- Establece variables de entorno (nombre DB: festify, usuario: user, password: secret)
+- Mapea el puerto 5432 para conectar desde la aplicación
+- **Para qué:** Para levantar la BD sin instalar PostgreSQL en tu máquina
+
+### 📄 mvnw / mvnw.cmd
+**¿Qué hace?** Son scripts de Maven Wrapper.
+- mvnw para sistemas Unix/Linux/Mac
+- mvnw.cmd para Windows
+- Permiten ejecutar Maven sin instalarlo globalmente
+- **Uso:** `./mvnw spring-boot:run` para arrancar la aplicación
+
+### 📄 README.md
+**¿Qué hace?** Documentación del proyecto en formato Markdown.
+- Explica qué hace el proyecto
+- Instrucciones de instalación y ejecución
+- Información para otros desarrolladores
+
+### 📄 .gitignore
+**¿Qué hace?** Lista de archivos que Git debe ignorar.
+- Excluye carpeta target/ (archivos compilados)
+- Ignora archivos de configuración del IDE
+- Evita subir archivos temporales o sensibles
+
+---
+
+## 📁 .mvn/wrapper/
+
+### 📄 maven-wrapper.properties
+**¿Qué hace?** Configuración del Maven Wrapper.
+- Define qué versión de Maven descargar automáticamente
+- Asegura que todos usen la misma versión de Maven
+
+---
+
+## 📁 src/main/ (CÓDIGO FUENTE PRINCIPAL)
+
+### 📁 src/main/java/com/GeorgeDavidDAM2/festify_apiEdu/
+
+#### 📄 FestifyApiEduApplication.java
+**¿Qué hace?** Es el punto de entrada de toda la aplicación Spring Boot.
+- Contiene el método main() que arranca la aplicación
+- Anotación @SpringBootApplication que configura todo automáticamente
+- **Función:** Cuando ejecutas la app, este archivo se ejecuta primero
+
+---
+
+### 📁 web/controller/
+
+#### 📄 ArtistController.java
+**¿Qué hace?** Es la PUERTA DE ENTRADA para las peticiones HTTP sobre artistas.
+- **@RestController:** Marca esta clase como controlador REST
+- **@GetMapping("/artists"):** Cuando alguien haga GET a /artists, ejecuta listArtists()
+- **@GetMapping("/artists/{id}"):** Para obtener un artista específico por ID
+- **Función:** Recibe peticiones HTTP → llama al Service → devuelve JSON al cliente
+
+---
+
+### 📁 services/
+
+#### 📄 ArtistService.java
+**¿Qué hace?** Es la INTERFAZ que define qué operaciones podemos hacer con artistas.
+- Define el método listArtists() pero no lo implementa
+- **Patrón:** Separar la definición de la implementación
+- **Ventaja:** Podemos cambiar la implementación sin tocar el controlador
+
+#### 📁 impl/
+##### 📄 ArtistServiceImpl.java
+**¿Qué hace?** Es la IMPLEMENTACIÓN REAL de las operaciones de negocio.
+- **@Service:** Marca esta clase como servicio de Spring
+- Implementa ArtistService (listArtists())
+- **Lógica:** Obtiene datos del Repository → los convierte con Mapper → devuelve DTOs
+- **Función:** Aquí van las reglas de negocio (validaciones, cálculos, etc.)
+
+---
+
+### 📁 dto/response/
+
+#### 📄 ArtistResumeResponse.java
+**¿Qué hace?** Define la ESTRUCTURA de datos que se envía al cliente como respuesta.
+- Es un Record (Java 14+) que es inmutable
+- **Campos:** id, name, genres, country, listeners, status, festivals
+- **Función:** Controla exactamente qué información se expone en la API
+- **Ventaja:** No expone datos internos de la BD, solo lo que el cliente necesita
+
+---
+
+### 📁 mapper/
+
+#### 📄 ArtistMapper.java
+**¿Qué hace?** CONVIERTE datos entre diferentes formatos.
+- Transforma ArtistEntity (BD) → ArtistResumeResponse (API)
+- **Conversiones:** listeners de Double a Integer, añade valores por defecto
+- **Función:** Separa la estructura de BD de la estructura de respuesta
+- **Método principal:** toArtistResumeResponse()
+
+---
+
+### 📁 persistence/jpa/entity/
+
+#### 📄 ArtistEntity.java
+**¿Qué hace?** MAPEA la tabla de base de datos a un objeto Java.
+- **@Entity:** Marca que es una entidad JPA
+- **@Table(name = "artists"):** Se mapea con la tabla "artists"
+- **@Id + @GeneratedValue:** Define la clave primaria auto-generada
+- **Campos:** id, name, genres, country, listeners, status
+- **Función:** Representa UN REGISTRO de la tabla artists en forma de objeto Java
+
+#### 📁 repository/
+##### 📄 ArtistJpaRepository.java
+**¿Qué hace?** INTERFAZ para acceso a datos automático.
+- Extiende JpaRepository<ArtistEntity, Long>
+- **Automático:** Spring genera métodos como findAll(), save(), findById()
+- **Sin código:** No necesitas escribir SQL, JPA lo hace automáticamente
+- **Función:** Abstrae completamente las operaciones de base de datos
+
+---
+
+### 📁 src/main/resources/
+
+#### 📄 application.yml
+**¿Qué hace?** CONFIGURACIÓN de la aplicación Spring Boot.
+- **spring.datasource:** Conexión a PostgreSQL (URL, usuario, contraseña)
+- **spring.jpa:** Configuración de Hibernate (mostrar SQL, validar esquema)
+- **Función:** Todos los parámetros de configuración en un solo lugar
+
+#### 📁 db/migration/
+##### 📄 V1__init.postgresql.sql
+**¿Qué hace?** SCRIPT de migración de base de datos (Flyway).
+- **V1:** Número de versión de la migración
+- Crea la tabla "artists" con todos sus campos y tipos
+- Define índices para búsquedas rápidas
+- **Función:** Versiona los cambios de BD, asegura que todos tengan la misma estructura
+
+---
+
+## 📁 src/test/ (PRUEBAS)
+
+### 📁 src/test/java/com/GeorgeDavidDAM2/festify_apiEdu/
+
+#### 📄 FestifyApiEduApplicationTests.java
+**¿Qué hace?** Prueba básica que verifica que la aplicación arranca correctamente.
+- **@SpringBootTest:** Carga el contexto completo de Spring
+- **Función:** Test de humo para asegurar que no hay errores graves de configuración
+
+#### 📄 TestFestifyApiEduApplication.java
+**¿Qué hace?** Configuración de aplicación específica para tests.
+- Versión de la app principal pero adaptada para pruebas
+- Puede tener configuración diferente (BD en memoria, mocks, etc.)
+
+#### 📄 TestcontainersConfiguration.java
+**¿Qué hace?** Configuración para usar Testcontainers.
+- Permite crear contenedores Docker durante las pruebas
+- **Ventaja:** Tests con BD real (PostgreSQL) en lugar de H2
+- **Función:** Tests más realistas y confiables
+
+---
+
+## 🔄 FLUJO COMPLETO DE CARPETAS
+
+1. **docker-compose.yml** → Levanta PostgreSQL
+2. **V1__init.postgresql.sql** → Crea la estructura de BD
+3. **application.yml** → Configura conexión a BD
+4. **FestifyApiEduApplication.java** → Arranca la app
+5. **ArtistController** → Recibe petición HTTP
+6. **ArtistService** → Procesa lógica de negocio
+7. **ArtistJpaRepository** → Consulta la BD
+8. **ArtistEntity** → Mapea datos de BD
+9. **ArtistMapper** → Convierte Entity → DTO
+10. **ArtistResumeResponse** → Devuelve JSON al cliente
+
+---
+
+## 🎯 RESUMEN POR RESPONSABILIDAD
+
+- **📁 controller/**: Maneja peticiones HTTP
+- **📁 services/**: Lógica de negocio
+- **📁 persistence/**: Acceso a datos
+- **📁 dto/**: Estructuras de respuesta
+- **📁 mapper/**: Conversiones entre capas
+- **📁 resources/**: Configuración y migraciones
+- **📁 test/**: Pruebas automatizadas

@@ -1,1 +1,65 @@
-ArtistEntity mappea los datos de la base de datos para convertirlos en un objeto y usarlos
+# FESTIFY API EDU - Arquitectura del Programa
+
+## Resumen General
+Este es un proyecto Spring Boot que implementa una API REST para gestionar artistas musicales, siguiendo una arquitectura por capas (layered architecture) que separa responsabilidades.
+
+## Flujo de Datos y Conexión entre Capas
+
+### 1. CAPA DE PRESENTACIÓN (Web/Controller)
+**ArtistController.java**
+- Es el punto de entrada de las peticiones HTTP
+- Expone endpoints REST: GET /artists y GET /artists/{id}
+- Recibe las peticiones del cliente y delega la lógica al Service
+- Retorna respuestas en formato JSON usando DTOs
+
+### 2. CAPA DE SERVICIO (Business Logic)
+**ArtistService.java** (interfaz) + **ArtistServiceImpl.java** (implementación)
+- Contiene la lógica de negocio de la aplicación
+- Actúa como intermediario entre Controller y Repository
+- Procesa los datos y aplica reglas de negocio
+- Usa el patrón de inyección de dependencias (@Autowired)
+
+### 3. CAPA DE ACCESO A DATOS (Persistence)
+**ArtistJpaRepository.java**
+- Extiende JpaRepository para operaciones CRUD automáticas
+- Abstrae las operaciones con la base de datos
+- Proporciona métodos como findAll(), findById(), etc.
+
+### 4. CAPA DE ENTIDAD (Data Model)
+**ArtistEntity.java**
+- Mapea los datos de la base de datos PostgreSQL a objetos Java
+- Usa anotaciones JPA (@Entity, @Table, @Id, @GeneratedValue)
+- Representa la estructura de la tabla "artists" en la BD
+
+### 5. CAPA DE TRANSFERENCIA (DTOs)
+**ArtistResumeResponse.java**
+- Record que define la estructura de respuesta de la API
+- Controla qué datos se exponen al cliente
+- Desacopla la estructura interna de la estructura de respuesta
+
+### 6. CAPA DE MAPEO (Mapper)
+**ArtistMapper.java**
+- Convierte entre ArtistEntity (BD) y ArtistResumeResponse (API)
+- Aplica transformaciones de datos (ej: listeners de Double a Integer)
+- Añade valores por defecto (DEFAULT_FESTIVALS, DEFAULT_ARTIST_IMG)
+
+## Flujo Completo de una Petición
+
+1. **Cliente** hace GET /artists
+2. **ArtistController** recibe la petición
+3. **Controller** llama a artistService.listArtists()
+4. **ArtistServiceImpl** llama a artistRepository.findAll()
+5. **ArtistJpaRepository** consulta la base de datos PostgreSQL
+6. **BD** retorna datos como **ArtistEntity**
+7. **Service** usa **ArtistMapper** para convertir Entity → Response DTO
+8. **Controller** retorna List<ArtistResumeResponse> en JSON al cliente
+
+## Patrones y Tecnologías Utilizadas
+- **Arquitectura por Capas**: Separación clara de responsabilidades
+- **Dependency Injection**: @Autowired para inyección de dependencias
+- **Repository Pattern**: ArtistJpaRepository para acceso a datos
+- **DTO Pattern**: ArtistResumeResponse para transferencia de datos
+- **Mapper Pattern**: ArtistMapper para conversión entre capas
+- **Spring Boot**: Framework principal con JPA/Hibernate
+- **PostgreSQL**: Base de datos relacional
+- **REST API**: Endpoints HTTP estándar

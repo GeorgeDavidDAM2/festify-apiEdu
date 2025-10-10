@@ -2,31 +2,51 @@ package com.GeorgeDavidDAM2.festify_apiEdu.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-//Mappea los datos de la base de dato a un objeto Java
-//Entidad JPA que representa a un artista en la base de datos
+
 @Entity
-@Table(name = "artists")
+@Table(name="artists")
 public class ArtistEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; 
+    @Column(nullable = false)
     private String name;
-    private List<String> genres;
+    @Column
     private String country;
-    private Double listeners;
-    private String status;
+    @Column(columnDefinition = "text[]", nullable = false)
+    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.ARRAY)
+    private List<String> genres = new ArrayList<>();
+
+    private Integer listeners;
+    @Column(nullable = false)
+    private String status = "Activo";
+    
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at", insertable = false, updatable = false)
+    private Timestamp updatedAt;
 
     public ArtistEntity() {
     }
 
-    public ArtistEntity(Long id, String name, List<String> genres, String country, Double listeners, String status) {
+    public ArtistEntity(Long id, String name, List<String> genres, String country, Integer listeners, String status) {
         this.id = id;
         this.name = name;
         this.genres = genres;
         this.country = country;
         this.listeners = listeners;
         this.status = status;
+    }
+
+    public ArtistEntity(String name, List<String> genres, String country) {
+        this.name = name;
+        this.genres = genres;
+        this.country = country;
     }
 
     public Long getId() {
@@ -61,11 +81,11 @@ public class ArtistEntity {
         this.country = country;
     }
 
-    public Double getListeners() {
+    public Integer getListeners() {
         return listeners;
     }
 
-    public void setListeners(Double listeners) {
+    public void setListeners(Integer listeners) {
         this.listeners = listeners;
     }
 

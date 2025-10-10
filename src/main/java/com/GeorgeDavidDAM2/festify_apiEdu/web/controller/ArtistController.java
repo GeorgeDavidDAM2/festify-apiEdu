@@ -1,20 +1,30 @@
 package com.GeorgeDavidDAM2.festify_apiEdu.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.GeorgeDavidDAM2.festify_apiEdu.dto.request.ArtistResumeRequest;
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.response.ArtistResumeResponse;
 import com.GeorgeDavidDAM2.festify_apiEdu.services.ArtistService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class ArtistController {
 
     private ArtistService artistService;
 
-    @Autowired
+    @Autowired //inyección de dependencias
     public ArtistController(ArtistService artistService) {
         this.artistService = artistService;
     }
@@ -32,5 +42,10 @@ public class ArtistController {
             }
         }
         return null; // Si no encuentra ningún artista, devuelve null 
+    }
+    @PostMapping(path = "/artists")
+    @ResponseStatus(code = HttpStatus.CREATED) // Indica que el código de respuesta será 201 Created
+    public ArtistResumeResponse createArtist(@Valid @RequestBody ArtistResumeRequest artistRequest) { //Es de tipo ArtistResumeResponse porque devuelve el artista creado
+        return this.artistService.createArtist(artistRequest);
     }
 }
