@@ -24,6 +24,9 @@ public class ArtistEntity {
     private Integer listeners;
     @Column(nullable = false)
     private String status = "Activo";
+
+    @Column
+    private String biography;
     
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
@@ -33,7 +36,15 @@ public class ArtistEntity {
 
     public ArtistEntity() {
     }
-
+    public ArtistEntity(Long id, String name, List<String> genres, String country, Integer listeners, String status,String biography) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.country = country;
+        this.listeners = listeners;
+        this.status = status;
+        this.biography = biography;
+    }
     public ArtistEntity(Long id, String name, List<String> genres, String country, Integer listeners, String status) {
         this.id = id;
         this.name = name;
@@ -95,5 +106,11 @@ public class ArtistEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getBiography() {
+        return biography;
+    }
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 }
