@@ -31,7 +31,7 @@ public class ArtistServiceImpl implements ArtistService {
         throw new InvalidIdException("Invalid artist id " + strId);
     }
     
-}
+    }
     private ArtistJpaRepository artistRepository;
     @Autowired
     public ArtistServiceImpl(ArtistJpaRepository artistRepository) {

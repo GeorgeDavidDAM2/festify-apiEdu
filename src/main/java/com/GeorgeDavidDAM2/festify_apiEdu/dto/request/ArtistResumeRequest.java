@@ -14,7 +14,7 @@ public record ArtistResumeRequest(
     String  id, 
 
     @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(max = 20, message = "El nombre no puede tener más de 100 caracteres")
+    @Size(max = 20, message = "El nombre no puede tener más de 20 caracteres")
     String name, 
 
     String country, 
