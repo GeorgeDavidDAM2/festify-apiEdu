@@ -26,7 +26,7 @@ public record ArtistResumeRequest(
     @Positive(message = "El número de oyentes debe ser un número positivo")
     Integer listeners,
 
-    @Pattern(regexp = "Activo|Inactivo", message = "El estado debe ser 'Activo' o 'Inactivo'")
+    @Pattern(regexp = "Activo|Draft", message = "El estado debe ser 'Activo' o 'Draft'")
     String status,
 
     @Size(max = 500, message = "La biografía no puede tener más de 500 caracteres")

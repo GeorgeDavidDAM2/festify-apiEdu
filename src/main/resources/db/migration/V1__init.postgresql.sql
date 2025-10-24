@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS artists (
     biography  VARCHAR(2000),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT artists_status_ck CHECK (status IN ('Activo','Borrador'))
+    CONSTRAINT artists_status_ck CHECK (status IN ('Activo','Draft'))
 );
 
 -- Índices útiles
