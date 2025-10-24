@@ -7,10 +7,12 @@ import com.GeorgeDavidDAM2.festify_apiEdu.dto.response.ArtistDetailResponse;
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.response.ArtistResumeResponse;
 
 public interface ArtistService {
+    
     List<ArtistResumeResponse> listArtists();
     ArtistDetailResponse getArtistById(String id);
     ArtistResumeResponse createArtist(ArtistResumeRequest artistRequest);
     void deleteArtist(String id);
+    ArtistDetailResponse updateArtist(String id, ArtistResumeRequest artistRequest);
     
 
 }

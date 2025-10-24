@@ -1,9 +1,9 @@
 package com.GeorgeDavidDAM2.festify_apiEdu.services.impl;
 
 import com.GeorgeDavidDAM2.festify_apiEdu.services.ArtistService;
+import com.GeorgeDavidDAM2.festify_apiEdu.utils.exception.ArtistNotFoundException;
 import com.GeorgeDavidDAM2.festify_apiEdu.utils.exception.InvalidIdException;
 
-import ch.qos.logback.classic.Logger;
 
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.request.ArtistResumeRequest;
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.response.ArtistDetailResponse;
@@ -15,7 +15,6 @@ import com.GeorgeDavidDAM2.festify_apiEdu.persistence.jpa.entity.repository.Arti
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,9 +68,26 @@ public class ArtistServiceImpl implements ArtistService {
     public void deleteArtist(String pubId){
         Long id = parseArtistId(pubId);
         if(!this.artistRepository.existsById(id)){
-            throw new InvalidIdException("El artista con id " + pubId + " no existe");
+            throw new ArtistNotFoundException("El artista con id " + pubId + " no existe");
         }
         this.artistRepository.deleteById(id);
     }
+
+    public ArtistDetailResponse updateArtist(String pubId, ArtistResumeRequest artistResumeRequest){
+        Long id = parseArtistId(pubId);
+        Optional<ArtistEntity> artistEntityOptional = this.artistRepository.findById(id); //el optional se usa para evitar el null pointer exception, en el create no hace falta porque se crea uno nuevo
+        if(artistEntityOptional.isEmpty()){
+            throw new ArtistNotFoundException("El artista con id " + pubId + " no existe");
+        }
+        ArtistEntity artistEntity = artistEntityOptional.get(); //pasamos de optional a entity para poder modificarlo
+        artistEntity.setName(artistResumeRequest.name());
+        artistEntity.setCountry(artistResumeRequest.country());
+        artistEntity.setGenres(artistResumeRequest.genres());
+        artistEntity.setListeners(artistResumeRequest.listeners());
+        artistEntity.setStatus(artistResumeRequest.status());
+        artistEntity.setBiography(artistResumeRequest.biography());
+        return ArtistMapper.toArtistDetailResponse(this.artistRepository.save(artistEntity));
+    }
+    
     
 }

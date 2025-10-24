@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +49,12 @@ public class ArtistController {
     }
 
     @DeleteMapping(path = "/artists/{id}")
-    public void deleteArtist(@PathVariable String id) {
+    public void deleteArtist(@PathVariable String id) { //el pathVariable va con ids para sacarlas de la url
         this.artistService.deleteArtist(id);
+    }
+
+    @PutMapping(path = "/artists/{id}")
+    public ArtistDetailResponse updateArtist(@PathVariable String id, @Valid @RequestBody ArtistResumeRequest artistRequest) {
+        return this.artistService.updateArtist(id, artistRequest);
     }
 }
