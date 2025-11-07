@@ -31,7 +31,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
     
     }
-    private ArtistJpaRepository artistRepository;
+    private ArtistJpaRepository artistRepository;//Declaramoos la dependencia del repositorio
     @Autowired
     public ArtistServiceImpl(ArtistJpaRepository artistRepository) {
         this.artistRepository = artistRepository;
@@ -44,6 +44,10 @@ public class ArtistServiceImpl implements ArtistService {
               .map(ArtistMapper::toArtistResumeResponse) //toArtistResumeResponse es un método estático de la clase ArtistMapper que convierte un ArtistEntity en un ArtistResumeResponse
               .toList();
     }
+    /*return this.artistRepository.findAll().stream()
+              .map(artist -> ArtistMapper.toArtistResumeResponse(artist)) Por cada artista que encuentre en el repositorio lo mapea a un ArtistResumeResponse
+              .toList();
+    } */
 
     public ArtistDetailResponse getArtistById(String pubId){
         Long id = parseArtistId(pubId);
@@ -55,7 +59,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     public ArtistResumeResponse createArtist(ArtistResumeRequest artistResumeRequest){
-        ArtistEntity artistEntity = new ArtistEntity();
+        ArtistEntity artistEntity = new ArtistEntity(); //Creamos una nueva entidad de artista
         artistEntity.setName(artistResumeRequest.name());
         artistEntity.setCountry(artistResumeRequest.country());
         artistEntity.setGenres(artistResumeRequest.genres());

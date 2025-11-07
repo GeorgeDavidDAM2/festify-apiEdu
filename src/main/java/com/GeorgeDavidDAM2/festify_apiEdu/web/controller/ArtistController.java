@@ -1,7 +1,6 @@
 package com.GeorgeDavidDAM2.festify_apiEdu.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.request.ArtistResumeRequest;
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.response.ArtistDetailResponse;
 import com.GeorgeDavidDAM2.festify_apiEdu.dto.response.ArtistResumeResponse;
@@ -25,6 +22,7 @@ import java.util.List;
 @RestController
 public class ArtistController {
 
+    //constructor-based dependency injection
     private ArtistService artistService;
 
     @Autowired //inyección de dependencias

@@ -1,0 +1,35 @@
+teniendo web y base de datos
+Existen capas: Controller,Service,Repository
+    Entity -> representamos la BBDD en modelo java
+
+
+1.Empezamos Controller
+    -Creamos el controlador de lo que queremos (ArtistController)
+    -Creamos endpoints
+        -Creamos el Response/Request
+    -Creamos record para response/request en su carpeta correspondiente dentro de dto *Existe @JsonProperty para cambiar el nombre del valor que devuelve
+    -Añadir @RestController y @CrossOrigin
+            -@ResponseStatus podemos devolver status HTTP 
+            -Si tenemos validaciones agregamos dentro de los parametros del endpoint un @Valid
+        -Agregar validaciones en el request
+
+2.Pasamos al service
+    -Creamos interfaz (ArtistService): y declaramos los metodos
+    -Creamos el directorio de implementacion(donde implementamos la interfaz) y creamos la logica del metodo
+    -Añadimos anotacion @Service
+    -Creamos el @Autowired (inyección de dependencias) y el constructor dentro de controller
+    -Retornamos dentro de los endpoints la logica de la implementacio
+
+3.ArtistEntity  
+    -Creamos directorio persistance.jpa.entity
+        -Dentro creamos Entity que representa la BBDD a modelo java
+            -A los atributos agregar anotacion @Column, (Si en la base de datos tenemos valores NOT NULL, agregamos en la anotacion un nullable= false)
+            -Ponemos al Entity anotacion @Entity y @Table(name="nombre")
+            -Creamos consturctores, getter y setter
+        -Creamos dentro directorio repository y el ArtistJpaRepository que extiende JpaRepository con el Entity y el id como valores
+        -Declaramos el ArtistJpaRepository en artistServiceImpl para usarlo
+
+4.Pasamos a Mapper  
+    -Creams directorio mapper
+        -Creamos ArtistMapper  que CONVIERTE datos entre diferentes formatos. recibe un Entity y lo devuelve como response
+
