@@ -27,5 +27,6 @@ public class AlbumController {
     public List<AlbumResponse> listAlbums(@PathVariable Long id) {
         return albumService.listAlbums(id);
     }
+    
 
 }
