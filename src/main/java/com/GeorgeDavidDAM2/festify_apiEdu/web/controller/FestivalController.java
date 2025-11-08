@@ -3,7 +3,6 @@ package com.GeorgeDavidDAM2.festify_apiEdu.web.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +23,7 @@ public class FestivalController {
         this.festivalService = festivalService;
     }
 
-    /*
+    /* 
     @GetMapping ("/festivals")
     public List<FestivalResponse> listAllFestivals() {
         return this.festivalService.listAllFestivals();
@@ -32,9 +31,16 @@ public class FestivalController {
 
     @GetMapping("/festivals")
     public ResponseEntity<Page<FestivalResponse>> getFestivalsPaginados(
-            Pageable pageable,
-            @RequestParam(required = false) String search
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-       return festivalService.getFestivalsPaginados(search, pageable);
+        // 1. Recibe 'page' y 'size' de la URL (gracias a @RequestParam)
+        
+        // 2. Llama a tu servicio (que ya funciona)
+        Page<FestivalResponse> paginaDeFestivales = festivalService.getFestivalsPaginados(page, size);
+        
+        // 3. Devuelve la página completa. 
+        // Spring Boot la convertirá a JSON automáticamente.
+        return ResponseEntity.ok(paginaDeFestivales);
     }
 }
