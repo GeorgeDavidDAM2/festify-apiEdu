@@ -34,19 +34,9 @@ public class FestivalServiceImpl implements FestivalService {
               .toList();
     }
 
-    @Override
-    public Page<FestivalResponse> getFestivalsPaginados(int numeroPagina, int tamañoPagina) {
+    
+    public Page<FestivalResponse> getFestivalsPaginados(String search, Pageable pageable) {
         
-        // Creamos el objeto Pageable.
-        // PageRequest.of(pagina, tamaño, orden)
-        // Usamos Sort.by para ordenar (ej. por fecha de la reserva, descendente)
-        Pageable pageable = PageRequest.of(
-            numeroPagina, 
-            tamañoPagina, 
-            Sort.by("fechaInicio").ascending()
-        );
-
-        // Llamamos al repositorio
         return festivalRepository.findAll(pageable).map(FestivalMapper::toFestivalResponse);
     }
 }
