@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS festivales (
                                           titulo        VARCHAR(160)  NOT NULL,
     descripcion   TEXT,
     city          VARCHAR(120)  NOT NULL,
-    fecha_inicio  DATE          NOT NULL,
-    fecha_fin     DATE          NOT NULL,
-    precio_min    DOUBLE PRECISION,
-    precio_max    DOUBLE PRECISION,
+    fecha_inicio  VARCHAR(120)          NOT NULL,
+    fecha_fin     VARCHAR(120)          NOT NULL,
+    precio_min    INTEGER,
+    precio_max    INTEGER,
     CONSTRAINT chk_fechas_validas CHECK (fecha_fin >= fecha_inicio),
     CONSTRAINT chk_precios_validos CHECK (
                                              precio_max IS NULL OR precio_min IS NULL OR precio_max >= precio_min

@@ -30,21 +30,21 @@ public class FestivalEntity {
     private String city;
 
     @Column(name="fecha_inicio", nullable = false)
-    private Date fechaInicio;
+    private String fechaInicio;
 
     @Column(name="fecha_fin", nullable = false)
-    private Date fechaFin;
+    private String fechaFin;
 
     @Column(name="precio_min", nullable = false)
-    private Float precioMin;
+    private Integer precioMin;
 
     @Column(name="precio_max", nullable = false)
-    private Float precioMax;
+    private Integer precioMax;
 
     public FestivalEntity() {
     }
-    public FestivalEntity(Long id, String titulo, String descripcion, String city, Date fechaInicio,
-            Date fechaFin, Float precioMin, Float precioMax) {
+    public FestivalEntity(Long id, String titulo, String descripcion, String city, String fechaInicio,
+            String fechaFin, Integer precioMin, Integer precioMax) {
             this.id = id;
             this.titulo = titulo;
             this.descripcion = descripcion;
@@ -79,28 +79,28 @@ public class FestivalEntity {
     public void setCity(String city) {
         this.city = city;
     }
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
-    public Float getPrecioMin() {
+    public Integer getPrecioMin() {
         return precioMin;
     }
-    public void setPrecioMin(Float precioMin) {
+    public void setPrecioMin(Integer precioMin) {
         this.precioMin = precioMin;
     }
-    public Float getPrecioMax() {
+    public Integer getPrecioMax() {
         return precioMax;
     }
-    public void setPrecioMax(Float precioMax) {
+    public void setPrecioMax(Integer precioMax) {
         this.precioMax = precioMax;
     }
 
