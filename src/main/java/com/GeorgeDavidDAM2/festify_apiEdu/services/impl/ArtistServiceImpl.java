@@ -92,6 +92,8 @@ public class ArtistServiceImpl implements ArtistService {
         artistEntity.setBiography(artistResumeRequest.biography());
         return ArtistMapper.toArtistDetailResponse(this.artistRepository.save(artistEntity));
     }
+
+    
     
     
 }

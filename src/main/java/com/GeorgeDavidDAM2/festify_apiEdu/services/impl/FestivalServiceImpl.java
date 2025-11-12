@@ -78,4 +78,24 @@ public class FestivalServiceImpl implements FestivalService {
         Optional<FestivalEntity> festivalEntity = this.festivalRepository.findById(id);
         return FestivalMapper.toFestivalResponse(festivalEntity.get());
     }
+
+    @Override
+    public FestivalResponse updateFestival(Long id, FestivalRequest festivalRequest) {
+        Optional<FestivalEntity> festivalEntityOptional = this.festivalRepository.findById(id);
+        if(festivalEntityOptional.isEmpty()){
+            throw new RuntimeException("Festival not found with id: " + id);
+        }
+        FestivalEntity festivalEntity = festivalEntityOptional.get();
+        festivalEntity.setTitulo(festivalRequest.titulo());
+        festivalEntity.setDescripcion(festivalRequest.descripcion());
+        festivalEntity.setCity(festivalRequest.city());
+        festivalEntity.setFechaInicio(festivalRequest.fechaInicio());
+        festivalEntity.setFechaFin(festivalRequest.fechaFin());
+        festivalEntity.setPrecioMin(festivalRequest.precioMin());
+        festivalEntity.setPrecioMax(festivalRequest.precioMax());
+
+        this.festivalRepository.save(festivalEntity);
+
+        return FestivalMapper.toFestivalResponse(festivalEntity);
+    }
 }

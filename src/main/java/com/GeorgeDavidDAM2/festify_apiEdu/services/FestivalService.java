@@ -13,4 +13,5 @@ public interface FestivalService {
     FestivalResponse createFestival(FestivalRequest festivalRequest);
     void deleteFestival(Long id);
     FestivalResponse getFestivalById(Long id);
+    FestivalResponse updateFestival(Long id, FestivalRequest festivalRequest);
 }

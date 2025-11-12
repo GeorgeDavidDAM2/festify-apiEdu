@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +67,11 @@ public class FestivalController {
     @GetMapping("/festivals/{id}")
     public FestivalResponse getFestivalById(@PathVariable Long id) {
         return this.festivalService.getFestivalById(id);
+    }
+
+    @PutMapping("/festivals/{id}")
+    public FestivalResponse updateFestival(@PathVariable Long id, @RequestBody FestivalRequest festivalRequest) {
+        return this.festivalService.updateFestival(id, festivalRequest);
     }
 
 }
